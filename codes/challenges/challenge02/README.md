@@ -46,3 +46,10 @@ $ npm install cors
  ---OR---
 $ yarn add cors
 ```
+
+### Images
+
+<img alt="Repository tests" src="https://raw.githubusercontent.com/pablorodrigo/gostack_bootcamp11/master/codes/challenges/challenge02/images/repository_tests.png" width="50%" />
+<p></p>
+<p></p>
+<img alt="Likes tests" src="https://github.com/pablorodrigo/gostack_bootcamp11/blob/master/codes/challenges/challenge02/images/likes_tests.png?raw=true" width="50%" />

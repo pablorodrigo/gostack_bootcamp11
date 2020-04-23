@@ -7,7 +7,9 @@ export function helloWorld(request: Request, response: Response) {
         email: 'teste@gmail.com',
         password: '1111',
         name: 'sdsdsdsd',
-        techs: ['tech1','tech2'],
+        techs:[
+            {title: 'teste', experience: 100}
+        ]
     });
 
     return response.json(user)

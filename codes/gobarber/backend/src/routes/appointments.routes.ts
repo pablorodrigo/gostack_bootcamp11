@@ -19,7 +19,7 @@ appointmentsRouter.get('/', async (request, response) => {
 // return registered data
 appointmentsRouter.post('/', async (request, response) => {
   try {
-    const { provider, date } = request.body;
+    const { provider_id, date } = request.body;
     const parsedDate = parseISO(date);
     getCustomRepository(AppointmentsRepository);
     const createAppointment = new CreateAppointmentService();
@@ -27,7 +27,7 @@ appointmentsRouter.post('/', async (request, response) => {
     // it create the model instance
     const appointment = await createAppointment.execute({
       date: parsedDate,
-      provider,
+      provider_id,
     });
 
     console.log(appointment);

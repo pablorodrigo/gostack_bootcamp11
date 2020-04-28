@@ -21,24 +21,20 @@ appointmentsRouter.get('/', async (request, response) => {
 
 // return registered data
 appointmentsRouter.post('/', async (request, response) => {
-  try {
-    const { provider_id, date } = request.body;
-    const parsedDate = parseISO(date);
-    getCustomRepository(AppointmentsRepository);
-    const createAppointment = new CreateAppointmentService();
+  const { provider_id, date } = request.body;
+  const parsedDate = parseISO(date);
+  getCustomRepository(AppointmentsRepository);
+  const createAppointment = new CreateAppointmentService();
 
-    // it create the model instance
-    const appointment = await createAppointment.execute({
-      date: parsedDate,
-      provider_id,
-    });
+  // it create the model instance
+  const appointment = await createAppointment.execute({
+    date: parsedDate,
+    provider_id,
+  });
 
-    console.log(appointment);
+  console.log(appointment);
 
-    return response.json(appointment);
-  } catch (error) {
-    return response.status(400).json({ error: error.message });
-  }
+  return response.json(appointment);
 });
 
 export default appointmentsRouter;

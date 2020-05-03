@@ -29,6 +29,7 @@
     "prettier"
   ],
   "rules": {
+    /*"react/jsx-max-props-per-line": [1, { "when": "always" }],*/
     "prettier/prettier": "error",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",

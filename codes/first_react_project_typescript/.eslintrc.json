@@ -42,6 +42,12 @@
         ]
       }
     ],
+    "@typescript-eslint/expricit-funcion-return-type": [
+      "error",
+      {
+        "allowExpressions": true
+      }
+    ],
     "import/prefer-default-export": "off",
     "import/extensions": [
       "error",

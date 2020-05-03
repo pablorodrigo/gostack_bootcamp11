@@ -30,7 +30,7 @@
   ],
   "rules": {
     /*"react/jsx-max-props-per-line": [1, { "when": "always" }],*/
-    "react/jsx-one-expression-per-line":  "off",
+    "react/jsx-one-expression-per-line": "off",
     "prettier/prettier": "error",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
@@ -43,12 +43,13 @@
         ]
       }
     ],
-    "@typescript-eslint/expricit-funcion-return-type": [
+    "@typescript-eslint/expricit-funcion-return-type": "off",
+    /*"@typescript-eslint/expricit-funcion-return-type": [
       "error",
       {
         "allowExpressions": true
       }
-    ],
+    ],*/
     "import/prefer-default-export": "off",
     "import/extensions": [
       "error",

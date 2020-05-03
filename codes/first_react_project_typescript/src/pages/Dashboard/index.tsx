@@ -1,10 +1,10 @@
 import React, { FormEvent, useState, useEffect } from 'react';
 import { FiChevronRight } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
-import api from '../../../services/api';
+import api from '../../services/api';
 import { Form, Title, Repositories, Error } from './styles';
 
-import logoImg from '../../../assets/logo.svg';
+import logoImg from '../../assets/logo.svg';
 
 // I should put when I know types of data returned from API
 interface Repository {
@@ -15,6 +15,7 @@ interface Repository {
     avatar_url: string;
   };
 }
+
 
 const Dashboard: React.FC = () => {
   const stoareGithubRepository = '@GithubExplorer:repositories';

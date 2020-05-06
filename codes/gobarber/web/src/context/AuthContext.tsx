@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useState } from 'react';
+import React, { createContext, useCallback, useContext, useState } from 'react';
 import api from '../services/api';
 
 interface SignInCredentials {
@@ -16,10 +16,10 @@ interface AuthState {
   user: object;
 }
 
-export const AuthContext = createContext<AuthContextData>({} as AuthContextData);
+const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 // children -> everything receive as child
-export const AuothProvider: React.FC = ({ children }) => {
+export const AuthProvider: React.FC = ({ children }) => {
   const [data, setData] = useState<AuthState>(() => {
     const token = localStorage.getItem('@Gobarber:token');
     const user = localStorage.getItem('@Gobarber:user');
@@ -51,3 +51,14 @@ export const AuothProvider: React.FC = ({ children }) => {
 
   return <AuthContext.Provider value={{ user: data.user, signIn }}>{children}</AuthContext.Provider>;
 };
+
+export function userAuth(): AuthContextData {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const context = useContext(AuthContext);
+
+  if (!context) {
+    throw new Error('userAuth must be used within an AuthProvider');
+  }
+
+  return context;
+}

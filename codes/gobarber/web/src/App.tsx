@@ -3,16 +3,16 @@ import GlobalStyle from './styles/global';
 import SignIn from './pages/SignIn/index';
 import SignUp from './pages/SignUp';
 
-import AuthContext from './context/AuthContext';
+import { AuothProvider } from './context/AuthContext';
 
 // depending on you put this 'tag', the pages will have the access
 // AuthContext.Provider
 
 const App: React.FC = () => (
   <>
-    <AuthContext.Provider value={{ name: 'Diego' }}>
+    <AuothProvider>
       <SignIn />
-    </AuthContext.Provider>
+    </AuothProvider>
     <GlobalStyle />
   </>
 );

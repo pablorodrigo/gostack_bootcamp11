@@ -1,45 +1,58 @@
-import React, {useCallback, useContext, useRef} from 'react';
+import React, { useCallback, useContext, useRef } from 'react';
 import { FiLogIn, FiMail, FiLock } from 'react-icons/all';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
 import { Container, Content, Background } from './styles';
 import logoImg from '../../assets/logo.svg';
-import AuthContext from '../../context/AuthContext';
+import { AuthContext } from '../../context/AuthContext';
 
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 import getValidationErrors from '../../utils/getValidationErrors';
 
+interface SignInFormData {
+  email: string;
+  password: string;
+}
+
 const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
-  const auth = useContext(AuthContext);
-  console.log(auth)
-
+  const { user, signIn } = useContext(AuthContext);
+  console.log(signIn);
+  console.log(user);
   console.log(formRef.current);
 
-  const handleSubmit = useCallback(async (data: object) => {
-    console.log(data);
+  const handleSubmit = useCallback(
+    async (data: SignInFormData) => {
+      console.log(data);
 
-    try {
-      formRef.current?.setErrors({});
-      const schema = Yup.object().shape({
-        email: Yup.string().required('Email obrigatorio').email('Digite um email valido'),
-        password: Yup.string().required('Senha obrigatoria'),
-      });
+      try {
+        formRef.current?.setErrors({});
+        const schema = Yup.object().shape({
+          email: Yup.string().required('Email obrigatorio').email('Digite um email valido'),
+          password: Yup.string().required('Senha obrigatoria'),
+        });
 
-      await schema.validate(data, {
-        abortEarly: false,
-      });
-    } catch (error) {
-      console.log(error);
+        await schema.validate(data, {
+          abortEarly: false,
+        });
+        signIn({
+          email: data.email,
+          password: data.password,
+        });
+      } catch (error) {
+        console.log(error);
 
-      const errors = getValidationErrors(error);
+        const errors = getValidationErrors(error);
 
-      formRef.current?.setErrors(errors);
-    }
-  }, []);
+        formRef.current?.setErrors(errors);
+      }
+    },
+    // if you are using external variable you must put it as dependence of useCallBack
+    [signIn],
+  );
 
   return (
     <Container>

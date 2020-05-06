@@ -24,7 +24,7 @@ class UpdateUserAvatarService {
     if (user.avatar) {
       const userAvatarFilePath = path.join(uploadConfig.directory, user.avatar);
       // check status of the file
-      const userAvatarFileExist = await fs.promises.stat(userAvatarFilePath);
+      const userAvatarFileExist = await fs.promises.stat(userAva1tarFilePath);
 
       if (userAvatarFileExist) {
         await fs.promises.unlink(userAvatarFilePath);

@@ -52,7 +52,11 @@ const SignIn: React.FC = () => {
         formRef.current?.setErrors(errors);
       }
 
-      addToast();
+      addToast({
+        type: 'error',
+        title: 'Erro na autenticacao',
+        description: 'Occoreu um error durante o login',
+      });
     },
     // if you are using external variable you must put it as dependence of useCallBack
     [signIn, addToast],

@@ -1,18 +1,21 @@
 import React from 'react';
+import ToastContainer from './components/ToastContainer';
 import GlobalStyle from './styles/global';
 import SignIn from './pages/SignIn/index';
 import SignUp from './pages/SignUp';
 
-import { AuthProvider } from './hooks/AuthContext';
+// providers
+import AppProvider from "./hooks";
 
 // depending on you put this 'tag', the pages will have the access
 // AuthContext.Provider
 
 const App: React.FC = () => (
   <>
-    <AuthProvider>
+    <AppProvider>
       <SignIn />
-    </AuthProvider>
+    </AppProvider>
+    <ToastContainer />
     <GlobalStyle />
   </>
 );

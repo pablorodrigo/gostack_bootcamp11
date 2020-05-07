@@ -5,7 +5,8 @@ import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
 import { Container, Content, Background } from './styles';
 import logoImg from '../../assets/logo.svg';
-import { userAuth } from '../../hooks/AuthContext';
+import { useAuth } from '../../hooks/auth';
+import { useToast } from '../../hooks/toast';
 
 import Input from '../../components/Input';
 import Button from '../../components/Button';
@@ -19,7 +20,8 @@ interface SignInFormData {
 const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
-  const { user, signIn } = userAuth();
+  const { user, signIn } = useAuth();
+  const { addToast } = useToast();
   // console.log(signIn);
   console.log(user);
   // console.log(formRef.current);
@@ -38,7 +40,7 @@ const SignIn: React.FC = () => {
         await schema.validate(data, {
           abortEarly: false,
         });
-        signIn({
+        await signIn({
           email: data.email,
           password: data.password,
         });
@@ -49,9 +51,11 @@ const SignIn: React.FC = () => {
 
         formRef.current?.setErrors(errors);
       }
+
+      addToast();
     },
     // if you are using external variable you must put it as dependence of useCallBack
-    [signIn],
+    [signIn, addToast],
   );
 
   return (

@@ -17,7 +17,7 @@ interface AuthState {
   user: object;
 }
 
-const AuthContext = createContext<AuthContextData>({} as AuthContextData);
+const Auth = createContext<AuthContextData>({} as AuthContextData);
 
 // children -> everything receive as child
 export const AuthProvider: React.FC = ({ children }) => {
@@ -57,12 +57,12 @@ export const AuthProvider: React.FC = ({ children }) => {
     setData({} as AuthState);
   }, []);
 
-  return <AuthContext.Provider value={{ user: data.user, signIn, signOut }}>{children}</AuthContext.Provider>;
+  return <Auth.Provider value={{ user: data.user, signIn, signOut }}>{children}</Auth.Provider>;
 };
 
-export function userAuth(): AuthContextData {
+export function useAuth(): AuthContextData {
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const context = useContext(AuthContext);
+  const context = useContext(Auth);
 
   if (!context) {
     throw new Error('userAuth must be used within an AuthProvider');

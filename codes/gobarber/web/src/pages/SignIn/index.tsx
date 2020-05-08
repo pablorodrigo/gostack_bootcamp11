@@ -3,7 +3,7 @@ import { FiLogIn, FiMail, FiLock } from 'react-icons/all';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Container, Content, AnimationContainer, Background } from './styles';
 import logoImg from '../../assets/logo.svg';
 import { useAuth } from '../../hooks/auth';
@@ -23,6 +23,7 @@ const SignIn: React.FC = () => {
 
   const { user, signIn } = useAuth();
   const { addToast } = useToast();
+  const history = useHistory();
   // console.log(signIn);
   console.log(user);
   // console.log(formRef.current);
@@ -45,24 +46,26 @@ const SignIn: React.FC = () => {
           email: data.email,
           password: data.password,
         });
+
+        history.push('/dashboard');
       } catch (error) {
         console.log(error);
+        if (error instanceof Yup.ValidationError) {
+          const errors = getValidationErrors(error);
 
-        const errors = getValidationErrors(error);
+          formRef.current?.setErrors(errors);
 
-        formRef.current?.setErrors(errors);
-
-        return;
+          return;
+        }
+        addToast({
+          type: 'error',
+          title: 'Erro na autenticacao',
+          description: 'Occoreu um error durante o login',
+        });
       }
-
-      addToast({
-        type: 'error',
-        title: 'Erro na autenticacao',
-        description: 'Occoreu um error durante o login',
-      });
     },
     // if you are using external variable you must put it as dependence of useCallBack
-    [signIn, addToast],
+    [signIn, history, addToast],
   );
 
   return (

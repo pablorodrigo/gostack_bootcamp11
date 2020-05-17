@@ -12,7 +12,9 @@ import Icon from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
 import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
+
 import * as Yup from 'yup';
+import { useAuth } from '../../hooks/auth';
 import logoImg from '../../assets/logo.png';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
@@ -37,10 +39,12 @@ const SignIn: React.FC = () => {
   const passwordInputRef = useRef<TextInput>(null);
   const navigation = useNavigation();
 
+  const { signIn, user } = useAuth();
+
   const handleSignIn = useCallback(
     async (data: SignInFormData) => {
       console.log(data);
-      console.log(formRef.current?.getData())
+      console.log(formRef.current?.getData());
       try {
         formRef.current?.setErrors({});
         const schema = Yup.object().shape({
@@ -50,6 +54,11 @@ const SignIn: React.FC = () => {
 
         await schema.validate(data, {
           abortEarly: false,
+        });
+
+        await signIn({
+          email: data.email,
+          password: data.password,
         });
       } catch (error) {
         console.log(error);
@@ -67,7 +76,7 @@ const SignIn: React.FC = () => {
       }
     },
     // if you are using external variable you must put it as dependence of useCallBack
-    [],
+    [signIn],
   );
 
   const submitForm = () => {

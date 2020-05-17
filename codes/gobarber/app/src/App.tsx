@@ -5,7 +5,7 @@ import { StatusBar, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import AppProvider from './hooks';
 import './config/ReactotronConfig';
-import Routes from './routes';
+import Routes from './routes/index';
 
 const App: React.FC = () => (
   <NavigationContainer>

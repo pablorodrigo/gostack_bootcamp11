@@ -18,6 +18,7 @@ import logoImg from '../../assets/logo.png';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 import { Container, Title, BackToSignInButton, BackToSignInText } from './styles';
+import api from '../../services/api';
 
 interface SignUpFormData {
   name: string;
@@ -32,31 +33,41 @@ const SignUp: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const navigation = useNavigation();
 
-  const handleSignUp = useCallback(async (data: SignUpFormData) => {
-    console.log(data);
+  const handleSignUp = useCallback(
+    async (data: SignUpFormData) => {
+      console.log(data);
 
-    try {
-      formRef.current?.setErrors({});
-      const schema = Yup.object().shape({
-        name: Yup.string().required('Nome obrigatorio'),
-        email: Yup.string().required('Email obrigatorio').email('Digite um email valido'),
-        password: Yup.string().required().min(6, 'No minimo 6 digitos'),
-      });
+      try {
+        formRef.current?.setErrors({});
+        const schema = Yup.object().shape({
+          name: Yup.string().required('Nome obrigatorio'),
+          email: Yup.string().required('Email obrigatorio').email('Digite um email valido'),
+          password: Yup.string().required().min(6, 'No minimo 6 digitos'),
+        });
 
-      await schema.validate(data, {
-        abortEarly: false,
-      });
-    } catch (error) {
-      if (error instanceof Yup.ValidationError) {
-        const errors = getValidationErrors(error);
+        await schema.validate(data, {
+          abortEarly: false,
+        });
 
-        formRef.current?.setErrors(errors);
+        await api.post('/users', data);
 
-        return;
+        Alert.alert('Cadastro realizado com sucesso', 'Vocë ja pode fazer o login');
+
+        // navigation.navigate('SignIn');
+        navigation.goBack();
+      } catch (error) {
+        if (error instanceof Yup.ValidationError) {
+          const errors = getValidationErrors(error);
+
+          formRef.current?.setErrors(errors);
+
+          return;
+        }
+        Alert.alert('Erro no cadastro', 'Occoreu ao fazer o cadastro, tente novamente');
       }
-      Alert.alert('Erro no cadastro', 'Occoreu ao fazer o cadastro, tente novamente');
-    }
-  }, []);
+    },
+    [navigation],
+  );
 
   const submitForm = () => {
     formRef.current?.submitForm();

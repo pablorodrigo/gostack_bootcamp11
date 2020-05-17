@@ -40,7 +40,7 @@ const SignIn: React.FC = () => {
   const handleSignIn = useCallback(
     async (data: SignInFormData) => {
       console.log(data);
-
+      console.log(formRef.current?.getData())
       try {
         formRef.current?.setErrors({});
         const schema = Yup.object().shape({

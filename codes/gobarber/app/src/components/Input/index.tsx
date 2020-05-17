@@ -20,7 +20,7 @@ interface InputValueReference {
 }
 
 interface InputRef {
-  focus(): string;
+  focus(): void;
 }
 
 const Input: React.ForwardRefRenderFunction<InputRef, InputProps> = (
@@ -42,17 +42,20 @@ const Input: React.ForwardRefRenderFunction<InputRef, InputProps> = (
   const handleInputBlur = useCallback(() => {
     setIsFocused(false);
 
-    if (inputValueRef.current.value) {
+    setIsFilled(!!inputValueRef.current.value);
+
+    /* if (inputValueRef.current.value) {
       setIsFilled(true);
     } else {
       setIsFilled(false);
-    }
+    } */
   }, []);
 
+  // serve pra passar uma funcionalidade do component interno(filho) para o pai
   useImperativeHandle(
     ref,
     () => ({
-      focus(): string {
+      focus() {
         inputElementRef.current.focus();
       },
     }),
@@ -60,22 +63,20 @@ const Input: React.ForwardRefRenderFunction<InputRef, InputProps> = (
   );
 
   useEffect(() => {
-    return () => {
-      registerField({
-        name: fieldName,
-        ref: inputValueRef.current,
-        path: 'value',
-        setValue(ref: any, value: string) {
-          inputValueRef.current.value = value;
-          // mudar visualmente o texto que ta dentro do input
-          inputElementRef.current.setNativeprops({ text: value });
-        },
-        clearValue() {
-          inputValueRef.current.value = '';
-          inputElementRef.current.clear();
-        },
-      });
-    };
+    registerField({
+      name: fieldName,
+      ref: inputValueRef.current,
+      path: 'value',
+      setValue(_, value: string) {
+        inputValueRef.current.value = value;
+        // mudar visualmente o texto que ta dentro do input
+        inputElementRef.current.setNativeProps({ text: value });
+      },
+      clearValue() {
+        inputValueRef.current.value = '';
+        inputElementRef.current.clear();
+      },
+    });
   }, [fieldName, registerField]);
 
   return (
@@ -84,11 +85,12 @@ const Input: React.ForwardRefRenderFunction<InputRef, InputProps> = (
       <TextInput
         ref={inputElementRef}
         keyboardAppearance="dark"
+        placeholderTextColor="#666360"
         defaultValue={defaultValue}
         onFocus={handleInputFocus}
         onBlur={handleInputBlur}
-        placeholderTextColor="#666360"
         onChangeText={(value) => {
+          console.log(value);
           inputValueRef.current.value = value;
         }}
         {...rest}

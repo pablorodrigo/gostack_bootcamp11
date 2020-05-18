@@ -2,10 +2,10 @@ import 'reflect-metadata';
 import express, { NextFunction, Request, Response } from 'express';
 import 'express-async-errors';
 import cors from 'cors';
-import routes from './shared/routes';
-import uploadConfig from './config/upload';
-import AppError from './shared/errors/AppError';
-import './shared/database';
+import routes from './routes';
+import uploadConfig from '../../../config/upload';
+import AppError from '../../errors/AppError';
+import '../database';
 
 const app = express();
 app.use(cors());

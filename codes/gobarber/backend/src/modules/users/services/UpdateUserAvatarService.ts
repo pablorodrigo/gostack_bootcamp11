@@ -1,20 +1,20 @@
-import { getRepository } from 'typeorm';
 import path from 'path';
 import * as fs from 'fs';
 import User from '@modules/users/infra/typeorm/entities/User';
 import uploadConfig from '@config/upload';
 import AppError from '@shared/errors/AppError';
+import IUserRepository from '@modules/users/repositories/IUserRepository';
 
-interface Request {
+interface IRequest {
   userId: string;
   avatarFileName: string;
 }
 
 class UpdateUserAvatarService {
-  async execute({ userId, avatarFileName }: Request): Promise<User> {
-    const usersRepository = getRepository(User);
+  constructor(private usersRepository: IUserRepository) {}
 
-    const user = await usersRepository.findOne(userId);
+  async execute({ userId, avatarFileName }: IRequest): Promise<User> {
+    const user = await this.usersRepository.findById(userId);
 
     if (!user) {
       throw new AppError('Only authenticated user can change it', 401);
@@ -32,7 +32,7 @@ class UpdateUserAvatarService {
     }
     user.avatar = avatarFileName;
 
-    await usersRepository.save(user);
+    await this.usersRepository.save(user);
 
     return user;
   }

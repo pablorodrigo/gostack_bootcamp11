@@ -27,10 +27,11 @@
       "warn"
     ],
     "prettier/prettier": "error",
+    "no-useless-constructor": "off",
     "class-methods-use-this": "off",
     "@typescript-eslint/camelcas": "off",
     "typescript-eslint/no-unused-vars": [
-      "error",
+      "off",
       {
         "argsIgnorePattern": "_"
       }

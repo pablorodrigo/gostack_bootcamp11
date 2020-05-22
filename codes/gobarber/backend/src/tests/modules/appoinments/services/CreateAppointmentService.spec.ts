@@ -1,4 +1,4 @@
-import FakeAppointmentRepository from '@tests/fakes/FakeAppointmentRepository';
+import FakeAppointmentRepository from '@tests/fakes/FakeAppointmentsRepository';
 import CreateAppointmentService from '@modules/appointments/services/CreateAppointmentService';
 import { uuid } from 'uuidv4';
 import AppError from '@shared/errors/AppError';

@@ -1,4 +1,4 @@
-import FakeAppointmentRepository from './fakes/FakeAppointmentRepository';
+import FakeAppointmentRepository from '@tests/fakes/FakeAppointmentRepository';
 import CreateAppointmentService from '@modules/appointments/services/CreateAppointmentService';
 
 describe('CreateAppointment', () => {

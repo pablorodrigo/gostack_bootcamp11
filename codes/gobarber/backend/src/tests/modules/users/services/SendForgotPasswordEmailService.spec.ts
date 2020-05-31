@@ -4,7 +4,7 @@ import FakeHashProvider from '@tests/fakes/FakeHashProvider';
 import CreateUserService from '@modules/users/services/CreateUserService';
 import AppError from '@shared/errors/AppError';
 import SendForgotPasswordEmailService from '@modules/users/services/SendForgotPasswordEmailService';
-import FakeMailProvider from '@shared/container/providers/MailProvider/fakes/FakeMailProvider';
+import FakeMailProvider from '@tests/fakes/FakeMailProvider';
 import FakeUserTokensRepository from '@tests/fakes/FakeUserTokensRepository';
 
 let fakeUserRepository: FakeUsersRepository;

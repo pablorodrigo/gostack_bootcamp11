@@ -3,15 +3,21 @@ import AppError from '@shared/errors/AppError';
 import FakeStorageProvider from '@tests/fakes/FakeStorageProvider';
 import UpdateUserAvatarService from '@modules/users/services/UpdateUserAvatarService';
 
+let fakeStorageProvider: FakeStorageProvider;
+let fakeUserRepository: FakeUsersRepository;
+let updateUserAvatar: UpdateUserAvatarService;
+
 describe('UpdatedUserAvatar', () => {
-  it('should be able to update a user avatar', async () => {
-    const fakeStorageProvider = new FakeStorageProvider();
-    const fakeUserRepository = new FakeUsersRepository();
-    const updateUserAvatar = new UpdateUserAvatarService(
+  beforeEach(() => {
+    fakeStorageProvider = new FakeStorageProvider();
+    fakeUserRepository = new FakeUsersRepository();
+    updateUserAvatar = new UpdateUserAvatarService(
       fakeUserRepository,
       fakeStorageProvider,
     );
+  });
 
+  it('should be able to update a user avatar', async () => {
     const user = await fakeUserRepository.create({
       name: 'Judi Doe',
       email: 'judidoe@email.com',
@@ -27,14 +33,6 @@ describe('UpdatedUserAvatar', () => {
   });
 
   it('should be not able to update a user avatar from non existing user', async () => {
-    const fakeStorageProvider = new FakeStorageProvider();
-    const fakeUserRepository = new FakeUsersRepository();
-
-    const updateUserAvatar = new UpdateUserAvatarService(
-      fakeUserRepository,
-      fakeStorageProvider,
-    );
-
     await expect(
       updateUserAvatar.execute({
         userId: 'no existing-user',
@@ -44,13 +42,6 @@ describe('UpdatedUserAvatar', () => {
   });
 
   it('should be able to delete avatar when updating a new one', async () => {
-    const fakeStorageProvider = new FakeStorageProvider();
-    const fakeUserRepository = new FakeUsersRepository();
-    const updateUserAvatar = new UpdateUserAvatarService(
-      fakeUserRepository,
-      fakeStorageProvider,
-    );
-
     // spy if method was executed
     const deleteFile = jest.spyOn(fakeStorageProvider, 'deleteFile');
 

@@ -51,12 +51,12 @@ class UpdateProfileService {
     }
 
     if (password && old_password) {
-      const checkOldPassowrd = await this.hashProvider.compareHash(
+      const checkOldPassword = await this.hashProvider.compareHash(
         old_password,
         user.password,
       );
 
-      if (!checkOldPassowrd) {
+      if (!checkOldPassword) {
         throw new AppError(
           'You must fill the old password correctly the don`t match',
         );

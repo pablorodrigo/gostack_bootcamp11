@@ -2,9 +2,9 @@ import { uuid } from 'uuidv4';
 import IAppointmentsRepository from '@modules/appointments/repositories/IAppointmentsRepository';
 import Appointment from '@modules/appointments/infra/typeorm/entities/Appointment';
 import ICreateAppointmentDTO from '@modules/appointments/dtos/ICreateAppointmentDTO';
-import {getDate, getMonth, getYear, isEqual} from 'date-fns';
+import { getDate, getMonth, getYear, isEqual } from 'date-fns';
 import IFindAllOnMonthFromProviderDTO from '@modules/appointments/dtos/IFindAllOnMonthFromProviderDTO';
-import IFindAllOnDayFromProviderDTO from "@modules/appointments/dtos/IFindAllOnDayFromProviderDTO";
+import IFindAllOnDayFromProviderDTO from '@modules/appointments/dtos/IFindAllOnDayFromProviderDTO';
 
 class FakeAppointmentsRepository implements IAppointmentsRepository {
   private appointments: Appointment[] = [];
@@ -20,11 +20,12 @@ class FakeAppointmentsRepository implements IAppointmentsRepository {
 
   async create({
     date,
+    user_id,
     provider_id,
   }: ICreateAppointmentDTO): Promise<Appointment> {
     const appointment = new Appointment();
 
-    Object.assign(appointment, { id: uuid(), date, provider_id });
+    Object.assign(appointment, { id: uuid(), date, provider_id, user_id });
 
     /*  appointment.id = uuid();
     appointment.date = date;

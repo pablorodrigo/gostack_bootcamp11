@@ -1,6 +1,6 @@
 import { inject, injectable } from 'tsyringe';
 import IAppointmentsRepository from '@modules/appointments/repositories/IAppointmentsRepository';
-import {getDate, getDaysInMonth, getHours, isAfter} from 'date-fns';
+import { getDate, getDaysInMonth, getHours, isAfter } from 'date-fns';
 
 interface IRequest {
   provider_id: string;
@@ -14,6 +14,7 @@ type IResponse = Array<{
   available: boolean;
 }>;
 
+@injectable()
 export default class ListProviderDayAvailableService {
   constructor(
     @inject('AppointmentsRepository')

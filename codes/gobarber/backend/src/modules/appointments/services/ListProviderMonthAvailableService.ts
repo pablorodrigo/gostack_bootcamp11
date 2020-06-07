@@ -44,7 +44,7 @@ export default class ListProviderMonthAvailableService {
       };
     });
 
-    console.log(appointments);
+    // console.log(appointments);
     return available;
   }
 }

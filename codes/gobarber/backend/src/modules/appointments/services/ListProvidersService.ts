@@ -19,11 +19,11 @@ export default class ListProvidersService {
   ) {}
 
   async execute({ user_id }: IRequest): Promise<User[]> {
-    const cashUsers = await this.cacheProvider.recover<User[]>(
+    const cacheUsers = await this.cacheProvider.recover<User[]>(
       `providers-list:${user_id}`,
     );
 
-    if (!cashUsers) {
+    if (!cacheUsers) {
       const users = await this.usersRepository.findAllProviders({
         except_user_id: user_id,
       });
@@ -37,6 +37,6 @@ export default class ListProvidersService {
       return users;
     }
 
-    return cashUsers;
+    return cacheUsers;
   }
 }

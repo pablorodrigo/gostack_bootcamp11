@@ -1,15 +1,18 @@
 import FakeAppointmentsRepository from '@tests/fakes/FakeAppointmentsRepository';
-import ListProviderDayAvailableService from '@modules/appointments/services/ListProviderDayAvailableService';
 import ListProviderAppointmentsService from '@modules/appointments/services/ListProviderAppointmentsService';
+import FakeRedisCacheProvider from '@tests/fakes/FakeRedisCacheProvider';
 
 let fakeAppointmentsRepository: FakeAppointmentsRepository;
 let listProviderAppointmentsService: ListProviderAppointmentsService;
+let fakeCacheProvider: FakeRedisCacheProvider;
 
 describe('ListProviderAppointmentsService.spec', () => {
   beforeEach(() => {
     fakeAppointmentsRepository = new FakeAppointmentsRepository();
+    fakeCacheProvider = new FakeRedisCacheProvider();
     listProviderAppointmentsService = new ListProviderAppointmentsService(
       fakeAppointmentsRepository,
+      fakeCacheProvider,
     );
   });
 

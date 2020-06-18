@@ -13,7 +13,7 @@ export default class SessionsController {
       password,
     });
 
-    return response.json({ user: classToClass(user) });
+    return response.json(classToClass(user));
   }
 
   async index(request: Request, response: Response): Promise<Response> {

@@ -3,6 +3,7 @@ import IAppointmentsRepository from '@modules/appointments/repositories/IAppoint
 import { getDate, getDaysInMonth } from 'date-fns';
 import Appointment from '@modules/appointments/infra/typeorm/entities/Appointment';
 import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
+import { classToClass } from 'class-transformer';
 
 interface IRequest {
   provider_id: string;
@@ -28,12 +29,12 @@ export default class ListProviderAppointmentsService {
     month,
   }: IRequest): Promise<Appointment[]> {
     const cacheKey = `provider-appointments:${provider_id}:${year}-${month}-${day}`;
-    const cacheAppointments = await this.cacheProvider.recover<Appointment[]>(
+    let appointments = await this.cacheProvider.recover<Appointment[]>(
       cacheKey,
     );
 
-    if (!cacheAppointments) {
-      const appointments = await this.appointmentsRepository.findAllOnDayFromProvider(
+    if (!appointments) {
+      appointments = await this.appointmentsRepository.findAllOnDayFromProvider(
         {
           provider_id,
           day,
@@ -44,13 +45,11 @@ export default class ListProviderAppointmentsService {
 
       console.log('buscou no banco');
 
-      return appointments;
+      await this.cacheProvider.save(cacheKey, classToClass(appointments));
     }
 
     console.log('buscou no cache');
 
-    await this.cacheProvider.save(cacheKey, cacheAppointments);
-
-    return cacheAppointments;
+    return appointments;
   }
 }

@@ -30,6 +30,7 @@
   ],
   "rules": {
     /*"react/jsx-max-props-per-line": [1, { "when": "always" }],*/
+    "@typescript-eslint/camelcase": "off",
     "react/jsx-props-no-spreading": "off",
     "react/prop-types": "off",
     "react/jsx-one-expression-per-line": "off",

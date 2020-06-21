@@ -1,27 +1,33 @@
 import React, { createContext, useCallback, useContext, useState } from 'react';
 import api from '../services/api';
 
-interface SignInCredentials {
+interface IUser {
+  id: string;
+  name: string;
+  avatar_url: string;
+}
+
+interface ISignInCredentials {
   email: string;
   password: string;
 }
 
-interface AuthContextData {
-  user: object;
-  signIn(credentials: SignInCredentials): Promise<void>;
+interface IAuthContextData {
+  user: IUser;
+  signIn(credentials: ISignInCredentials): Promise<void>;
   signOut(): void;
 }
 
-interface AuthState {
+interface IAuthState {
   token: string;
-  user: object;
+  user: IUser;
 }
 
-const Auth = createContext<AuthContextData>({} as AuthContextData);
+const Auth = createContext<IAuthContextData>({} as IAuthContextData);
 
 // children -> everything receive as child
 export const AuthProvider: React.FC = ({ children }) => {
-  const [data, setData] = useState<AuthState>(() => {
+  const [data, setData] = useState<IAuthState>(() => {
     const token = localStorage.getItem('@Gobarber:token');
     const user = localStorage.getItem('@Gobarber:user');
 
@@ -29,7 +35,7 @@ export const AuthProvider: React.FC = ({ children }) => {
       return { token, user: JSON.parse(user) };
     }
 
-    return {} as AuthState;
+    return {} as IAuthState;
   });
 
   const signIn = useCallback(async ({ email, password }) => {
@@ -54,13 +60,13 @@ export const AuthProvider: React.FC = ({ children }) => {
     localStorage.removeItem('@Gobarber:token');
     localStorage.removeItem('@Gobarber:user');
 
-    setData({} as AuthState);
+    setData({} as IAuthState);
   }, []);
 
   return <Auth.Provider value={{ user: data.user, signIn, signOut }}>{children}</Auth.Provider>;
 };
 
-export function useAuth(): AuthContextData {
+export function useAuth(): IAuthContextData {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const context = useContext(Auth);
 

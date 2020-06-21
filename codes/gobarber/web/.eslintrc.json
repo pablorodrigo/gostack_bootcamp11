@@ -38,6 +38,12 @@
     "no-unused-expressions": "off",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
+    "@typescript-eslint/interface-name-prefix": [
+      "error",
+      {
+        "prefixWithI": "always"
+      }
+    ],
     "react/jsx-filename-extension": [
       1,
       {

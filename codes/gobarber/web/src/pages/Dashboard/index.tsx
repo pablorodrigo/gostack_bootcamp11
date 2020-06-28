@@ -21,10 +21,6 @@ import logoImg from '../../assets/logo.svg';
 import { useAuth } from '../../hooks/auth';
 import api from '../../services/api';
 
-interface ICalendarModifiers extends DayModifiers {
-  available: boolean;
-}
-
 interface IMonthAvailabilityItem {
   day: number;
   available: boolean;

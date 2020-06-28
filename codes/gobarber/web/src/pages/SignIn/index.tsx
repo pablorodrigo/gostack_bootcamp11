@@ -25,12 +25,12 @@ const SignIn: React.FC = () => {
   const { addToast } = useToast();
   const history = useHistory();
   // console.log(signIn);
-  console.log(user);
+  // console.log(user);
   // console.log(formRef.current);
 
   const handleSubmit = useCallback(
     async (data: SignInFormData) => {
-      console.log(data);
+      // console.log(data);
 
       try {
         formRef.current?.setErrors({});
@@ -49,7 +49,7 @@ const SignIn: React.FC = () => {
 
         history.push('/dashboard');
       } catch (error) {
-        console.log(error);
+        // console.log(error);
         if (error instanceof Yup.ValidationError) {
           const errors = getValidationErrors(error);
 

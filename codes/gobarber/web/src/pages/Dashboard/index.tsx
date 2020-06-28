@@ -4,7 +4,6 @@ import { isToday, format, parseISO, isAfter } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
 import 'react-day-picker/lib/style.css';
 import { FiClock, FiPower } from 'react-icons/all';
-import { Simulate } from 'react-dom/test-utils';
 import { Link } from 'react-router-dom';
 import {
   Appointment,
@@ -65,7 +64,7 @@ const Dashboard: React.FC = () => {
   const [monthAvailability, setMonthAvailability] = useState<IMonthAvailabilityItem[]>([]);
   const [appointments, setAppointments] = useState<IAppointment[]>([]);
 
-  console.log(appointments);
+  // console.log(appointments);
 
   const handleDateChange = useCallback((day: Date, modifiers: DayModifiers) => {
     if (modifiers.available && !modifiers.disabled) {
@@ -171,7 +170,7 @@ const Dashboard: React.FC = () => {
 
       <Content>
         <Schedule>
-          <h1>Horarios agendados</h1>
+          <h1>Horários agendados</h1>
           <p>
             {isToday(selectedDate) && <span>Hoje</span>}
             <span>{selectDateAsText}</span>

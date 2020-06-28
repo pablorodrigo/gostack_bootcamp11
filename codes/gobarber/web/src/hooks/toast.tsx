@@ -4,26 +4,26 @@ import { uuid } from 'uuidv4';
 import { Omit } from '@unform/core';
 import ToastContainer from '../components/ToastContainer';
 
-export interface ToastMessage {
+export interface IToastMessage {
   id: string;
   type?: 'success' | 'error' | 'info';
   title: string;
   description?: string;
 }
 
-interface ToastContextData {
-  addToast(message: Omit<ToastMessage, 'id'>): void;
+interface IToastContextData {
+  addToast(message: Omit<IToastMessage, 'id'>): void;
 
   removeToast(id: string): void;
 }
 
-const Toast = createContext<ToastContextData>({} as ToastContextData);
+const Toast = createContext<IToastContextData>({} as IToastContextData);
 
 export const ToastProvider: React.FC = ({ children }) => {
-  const [messages, setMessages] = useState<ToastMessage[]>([]);
+  const [messages, setMessages] = useState<IToastMessage[]>([]);
 
   const addToast = useCallback(
-    ({ type, title, description }: Omit<ToastMessage, 'id'>) => {
+    ({ type, title, description }: Omit<IToastMessage, 'id'>) => {
       console.log('addToast');
       const id = uuid();
 
@@ -58,7 +58,7 @@ export const ToastProvider: React.FC = ({ children }) => {
   );
 };
 
-export function useToast(): ToastContextData {
+export function useToast(): IToastContextData {
   const context = useContext(Toast);
 
   if (!context) {

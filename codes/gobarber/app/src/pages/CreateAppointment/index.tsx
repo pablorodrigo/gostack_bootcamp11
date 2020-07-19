@@ -29,7 +29,7 @@ const CreateAppointment: React.FC = () => {
   const providerId = route.params;
 
   const [providers, setProviders] = useState<IProvider[]>([]);
-  const [selectedProvider, setSelectedProvider] = useState('');
+  const [selectedProvider, setSelectedProvider] = useState(providerId);
 
   const navigateBack = useCallback(() => {
     goBack();

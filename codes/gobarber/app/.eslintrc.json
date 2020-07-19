@@ -31,6 +31,7 @@
   "rules": {
     "@typescript-eslint/explicit-function-return-type": "warn",
     "no-restricted-modules": "off",
+    "@typescript-eslint/interface-name-prefix": "off",
     /*"react/jsx-max-props-per-line": [1, { "maximum": 1, "when": "always" }],*/
     /*eact/jsx-first-prop-new-line*/
     "react/jsx-props-no-spreading": "off",

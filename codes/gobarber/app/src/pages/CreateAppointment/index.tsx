@@ -27,6 +27,11 @@ interface IRouteParams {
   providerId: string;
 }
 
+interface IAvailabilityItem {
+  hour: number;
+  available: boolean;
+}
+
 const CreateAppointment: React.FC = () => {
   const { user } = useAuth();
   const route = useRoute();
@@ -34,6 +39,7 @@ const CreateAppointment: React.FC = () => {
   // const { providerId } = route.params as IRouteParams;
   const providerId = route.params;
 
+  const [availability, setAvailability] = useState<IAvailabilityItem>([]);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [providers, setProviders] = useState<IProvider[]>([]);
@@ -42,6 +48,21 @@ const CreateAppointment: React.FC = () => {
   const navigateBack = useCallback(() => {
     goBack();
   }, [goBack]);
+
+  useEffect(() => {
+    api
+      .get(`providers/${selectedProvider}/day-availability`, {
+        params: {
+          year: selectedDate.getFullYear(),
+          month: selectedDate.getMonth() + 1,
+          day: selectedDate.getDate(),
+        },
+      })
+      .then((response) => {
+        setAvailability(response.data);
+        console.log(response.data);
+      });
+  }, [selectedDate, selectedProvider]);
 
   const handleSelectProvider = useCallback((id: string) => {
     setSelectedProvider(id);

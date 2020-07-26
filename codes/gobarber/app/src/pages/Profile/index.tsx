@@ -12,14 +12,15 @@ import { BackButton, Container, Title, UserAvatar, UserAvatarButton } from './st
 import api from '../../services/api';
 import { useAuth } from '../../hooks/auth';
 
-interface SignUpFormData {
+interface IProfileFormData {
   name: string;
   email: string;
+  old_password: string;
   password: string;
+  password_confirmation: string;
 }
-
 const Profile: React.FC = () => {
-  const { signOut, user } = useAuth();
+  const { user, updateUser } = useAuth();
   const passwordInputRef = useRef<TextInput>(null);
   const emailInputRef = useRef<TextInput>(null);
   const oldPasswordInputRef = useRef<TextInput>(null);
@@ -29,7 +30,7 @@ const Profile: React.FC = () => {
   const navigation = useNavigation();
 
   const handleSignUp = useCallback(
-    async (data: SignUpFormData) => {
+    async (data: IProfileFormData) => {
       console.log(data);
 
       try {
@@ -37,16 +38,42 @@ const Profile: React.FC = () => {
         const schema = Yup.object().shape({
           name: Yup.string().required('Nome obrigatorio'),
           email: Yup.string().required('Email obrigatorio').email('Digite um email valido'),
-          password: Yup.string().required().min(6, 'No minimo 6 digitos'),
+          old_password: Yup.string(),
+          password: Yup.string().when('old_password', {
+            is: (val) => !!val.length,
+            then: Yup.string().required('Campo obrigatorio'),
+            otherwise: Yup.string(),
+          }),
+          password_confirmation: Yup.string()
+            .when('old_password', {
+              is: (val) => !!val.length,
+              then: Yup.string().required('Campo obrigatorio'),
+              otherwise: Yup.string(),
+            })
+            .oneOf([Yup.ref('password'), null], 'Passwords must match'),
         });
 
         await schema.validate(data, {
           abortEarly: false,
         });
 
-        await api.post('/users', data);
+        const formData = {
+          name: data.name,
+          email: data.email,
+          ...(data.old_password
+            ? {
+                old_password: data.old_password,
+                password: data.password,
+                password_confirmation: data.password_confirmation,
+              }
+            : {}),
+        };
 
-        Alert.alert('Cadastro realizado com sucesso', 'Vocë ja pode fazer o login');
+        const response = await api.put('/profile', formData);
+
+        updateUser(response.data);
+
+        Alert.alert('Perfil atualizado com sucesso');
 
         // navigation.navigate('SignIn');
         navigation.goBack();
@@ -58,7 +85,7 @@ const Profile: React.FC = () => {
 
           return;
         }
-        Alert.alert('Erro no cadastro', 'Occoreu ao fazer o cadastro, tente novamente');
+        Alert.alert('Erro na att do perfil', 'Occoreu ao att seu perfil, tente novamente');
       }
     },
     [navigation],
@@ -92,7 +119,7 @@ const Profile: React.FC = () => {
               <Title>Meu Perfil</Title>
             </View>
 
-            <Form ref={formRef} onSubmit={handleSignUp}>
+            <Form initialData={user} ref={formRef} onSubmit={handleSignUp}>
               <Input
                 autoCorrect
                 autoCapitalize="words"

@@ -5,6 +5,7 @@ import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
 import Icon from 'react-native-vector-icons/Feather';
+import ImagePicker from 'react-native-image-picker';
 import getValidationErrors from '../../utils/getValidationErrors';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
@@ -88,12 +89,50 @@ const Profile: React.FC = () => {
         Alert.alert('Erro na att do perfil', 'Occoreu ao att seu perfil, tente novamente');
       }
     },
-    [navigation],
+    [navigation, updateUser],
   );
 
   const handleGoBack = useCallback(() => {
     navigation.goBack();
   }, [navigation]);
+
+  const handleUpdateAvatar = useCallback(() => {
+    ImagePicker.showImagePicker(
+      {
+        title: 'Selecione um Avatar',
+        cancelButtonTitle: 'Cancelar',
+        takePhotoButtonTitle: 'Usar Camera',
+        chooseFromLibraryButtonTitle: 'Escolhe da galeria',
+      },
+      (response) => {
+        console.log('Response = ', response);
+
+        if (response.didCancel) {
+          console.log('User cancelled image picker');
+          return;
+        }
+        if (response.error) {
+          Alert.alert('Error ao att seu avatar');
+          console.log('ImagePicker Error: ', response.error);
+          return;
+        }
+        const source = { uri: response.uri };
+        console.log(source);
+
+        const data = new FormData();
+
+        data.append('avatar', {
+          uri: response.uri,
+          type: 'image/jpeg',
+          name: `${user.id}.jpg`,
+        });
+
+        api.patch('users/avatar', data).then((apiResponse) => {
+          updateUser(apiResponse.data);
+        });
+      },
+    );
+  }, [updateUser, user.id]);
 
   const submitForm = () => {
     formRef.current?.submitForm();
@@ -111,7 +150,7 @@ const Profile: React.FC = () => {
             <BackButton onPress={handleGoBack}>
               <Icon name="chevron-left" size={24} color="#999591" />
             </BackButton>
-            <UserAvatarButton>
+            <UserAvatarButton onPress={handleUpdateAvatar}>
               <UserAvatar source={{ uri: user.avatar_url }} />
             </UserAvatarButton>
 

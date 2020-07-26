@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { View } from 'react-native';
+import {Text, View} from 'react-native';
 
 const AppointmentCreate: React.FC = () => {
   return (
-    <View>AppointmentCreate</View>
+    <Text>AppointmentCreate</Text>
   );
 };
 
